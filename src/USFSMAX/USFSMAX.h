@@ -29,11 +29,12 @@
 #ifndef USFSMAX_h
 #define USFSMAX_h
 
-#include "Alarms.h"
-#include "def.h"
-#include "config.h"
-#include "Types.h"
+//#include "Alarms.h"
+//#include "def.h"
+//#include "config.h"
+//#include "Types.h"
 
+#define USFSMAX_ADDR				  0x57
 #define SENS_ERR_STAT                 0x00
 #define CALIBRATION_STATUS            0x01
 #define ACCEL_CAL_POS                 0x02
@@ -149,6 +150,7 @@
 #define FUSION_RUNNING_MASK           0x01
 #define HI_CORRECTOR_MASK             0x10
 
+/*
 extern CoProcessorConfig_t            Cfg[2];
 extern uint8_t                        cfg_buff[sizeof(CoProcessorConfig_t)];
 extern full_adv_cal_t                 gyrocal[2];
@@ -171,6 +173,7 @@ extern int16_t                        accLIN[2][3];
 extern int16_t                        grav[2][3];
 extern int32_t                        baroADC[2];
 extern float                          Rsq;
+*/
 
 /*
 class USFSMAX

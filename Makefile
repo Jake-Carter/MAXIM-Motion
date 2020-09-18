@@ -74,6 +74,7 @@ VPATH=./src
 # Where to find header files for this test
 IPATH = .
 IPATH += ./src
+IPATH += ./src/USFSMAX
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 

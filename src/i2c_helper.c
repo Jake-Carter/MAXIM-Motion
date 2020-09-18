@@ -41,7 +41,7 @@ int i2c_readBytes(uint8_t addr, uint8_t reg, uint8_t count, uint8_t* out) {
 	int w_status = I2C_MasterWrite(I2C_BUS, (addr << 1), &tx, 1, 1); // Write the register addr to the slave w/ a repeated start
 	int r_status = I2C_MasterRead(I2C_BUS, (addr << 1), out, count, 0); // Read [count] bytes from the slave
 
-	if (w_status != 1 || r_status != E_NO_ERROR) { return 0; }
+	if (w_status != 1 || r_status != count) { return 0; }
 	else { return 1; }
 }
 
