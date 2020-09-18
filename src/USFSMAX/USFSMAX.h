@@ -29,7 +29,6 @@
 #ifndef USFSMAX_h
 #define USFSMAX_h
 
-#include "I2Cdev.h"
 #include "Alarms.h"
 #include "def.h"
 #include "config.h"
@@ -173,6 +172,7 @@ extern int16_t                        grav[2][3];
 extern int32_t                        baroADC[2];
 extern float                          Rsq;
 
+/*
 class USFSMAX
 {
   public:
@@ -202,5 +202,6 @@ class USFSMAX
      uint8_t                          _sensornum;
      float                            uint32_reg_to_float (uint8_t *buf);
 };
+*/
 
 #endif // USFSMAX_h
