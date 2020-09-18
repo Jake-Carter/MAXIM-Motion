@@ -70,6 +70,7 @@ void I2C0_IRQHandler(void)
 // *****************************************************************************
 int main(void)
 {
+
     i2c_init();
     //NVIC_EnableIRQ(I2C0_IRQn);
 }
