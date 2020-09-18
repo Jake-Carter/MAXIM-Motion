@@ -66,12 +66,14 @@ CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
+SRCS += i2c_helper.c
 
 # Where to find source files for this test
 VPATH=./src
 
 # Where to find header files for this test
 IPATH = .
+IPATH += ./src
 
 # Enable assertion checking for development
 PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
