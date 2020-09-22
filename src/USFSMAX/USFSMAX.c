@@ -6,6 +6,7 @@
 #include "tmr_utils.h"
 
 // TODO : Implement all USFSMAX.h functions
+
 void delay(int ms) {
 	TMR_Delay(MXC_TMR0, MSEC(ms), 0);
 }
@@ -54,18 +55,21 @@ void USFSMAX_init() {
 		config.m_dec             = MAG_DECLINIATION;
 		config.quat_div          = QUAT_DIV;
 
-		// Unpack configuration struct and send to config memory block
+		// Unpack configuration struct to a sequence of bytes
 		printf("Unpacking config struct...");
 		uint8_t* unpacked = malloc(sizeof(CoProcessorConfig_t));
 		memcpy(unpacked, &config, sizeof(CoProcessorConfig_t));
 		printf("Done!\n");
 
+		// Write configuration block to device
 		printf("Writing configuration to device...");
 		i2c_writeBytes(USFSMAX_ADDR, COPRO_CFG_DATA0, 30, unpacked);
 		delay(100);
 		i2c_writeBytes(USFSMAX_ADDR, COPRO_CFG_DATA1, sizeof(CoProcessorConfig_t) - 30, &unpacked[30]);
 		delay(100);
 		printf("Done!\n");
+
+		free(unpacked); // Don't forget to free your memory allocation!!
 
 		// Restart sensor fusion
 		printf("Restarting sensor fusion...");
