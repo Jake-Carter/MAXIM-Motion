@@ -29,10 +29,10 @@
 #ifndef USFSMAX_h
 #define USFSMAX_h
 
-//#include "Alarms.h"
-//#include "def.h"
-//#include "config.h"
-//#include "Types.h"
+//#include "Alarms.h" // TODO : Implement Alarm functions
+#include "def.h"
+#include "config.h"
+#include "Types.h"
 
 #define USFSMAX_ADDR				  0x57
 #define SENS_ERR_STAT                 0x00
@@ -174,6 +174,8 @@ extern int16_t                        grav[2][3];
 extern int32_t                        baroADC[2];
 extern float                          Rsq;
 */
+
+void USFSMAX_init();
 
 /*
 class USFSMAX
