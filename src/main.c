@@ -46,7 +46,6 @@
  *
  ******************************************************************************/
 
-/***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -54,10 +53,6 @@
 #include "pb.h"
 #include "i2c_helper.h"
 #include "USFSMAX.h"
-
-/***** Definitions *****/
-
-/***** Functions *****/
 
 //Master interrupt handler
 /*
@@ -74,15 +69,8 @@ int main(void)
 
     i2c_init();
     //NVIC_EnableIRQ(I2C0_IRQn);
-    printf("Starting fusion loop...\n");
-    i2c_writeByte(USFSMAX_ADDR, FUSION_START_STOP, 0b1);
-    uint8_t status = i2c_readByte(USFSMAX_ADDR, FUSION_STATUS);
 
-    if (status != 1) {
-    	printf("Failed to start fusion loop...\n");
-    } else {
-    	printf("Fusion loop is running!\n");
-    }
+    USFSMAX_init();
 
     return 1;
 }

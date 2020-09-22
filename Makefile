@@ -67,17 +67,18 @@ CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 # Source files for this test (add path to VPATH below)
 SRCS  = main.c
 SRCS += i2c_helper.c
+SRCS += USFSMAX.c
 
 # Where to find source files for this test
 VPATH=./src
+VPATH += ./src/USFSMAX
 
 # Where to find header files for this test
-IPATH = .
 IPATH += ./src
 IPATH += ./src/USFSMAX
 
 # Enable assertion checking for development
-PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE 
+PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 
 # Specify the target revision to override default
 # "A2" in ASCII
@@ -93,7 +94,7 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 # Point this variable to a startup file to override the default file
 #STARTUPFILE=start.S
 
-MXC_OPTIMIZE=-O1
+MXC_OPTIMIZE_CFLAGS=-Os
 
 # Point this variable to a linker file to override the default file
 # LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
