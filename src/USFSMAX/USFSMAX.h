@@ -176,6 +176,7 @@ extern float                          Rsq;
 */
 
 void USFSMAX_init();
+void USFSMAX_configure(CoProcessorConfig_t config);
 
 /*
 class USFSMAX
