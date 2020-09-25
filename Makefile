@@ -94,7 +94,7 @@ PROJ_CFLAGS+=-DMXC_ASSERT_ENABLE
 # Point this variable to a startup file to override the default file
 #STARTUPFILE=start.S
 
-MXC_OPTIMIZE_CFLAGS=-Os
+MXC_OPTIMIZE_CFLAGS=-O0
 
 # Point this variable to a linker file to override the default file
 # LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
