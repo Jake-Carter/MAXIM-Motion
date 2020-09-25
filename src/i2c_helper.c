@@ -22,7 +22,7 @@ void i2c_init() {
 	I2C_Init(I2C_BUS, I2C_SPEED, 0);
 }
 
-uint8_t i2c_readByte(uint8_t addr, uint8_t reg) {
+uint8_t i2c_read_byte(uint8_t addr, uint8_t reg) {
 	uint8_t tx = reg;
 	uint8_t rx = 0;
 
@@ -32,7 +32,7 @@ uint8_t i2c_readByte(uint8_t addr, uint8_t reg) {
 	return rx;
 }
 
-int i2c_readBytes(uint8_t addr, uint8_t reg, uint8_t count, uint8_t* out) {
+int i2c_read_bytes(uint8_t addr, uint8_t reg, uint8_t count, uint8_t* out) {
 	uint8_t tx = reg;
 	for (int i = 0; i < count; i++) {
 		out[i] = 0;
@@ -45,7 +45,7 @@ int i2c_readBytes(uint8_t addr, uint8_t reg, uint8_t count, uint8_t* out) {
 	else { return 1; }
 }
 
-int i2c_writeByte(uint8_t addr, uint8_t reg, uint8_t value) {
+int i2c_write_byte(uint8_t addr, uint8_t reg, uint8_t value) {
 	// Write the register address, then the byte value
 	uint8_t tx[2] = { reg, value };
 	int w_status = I2C_MasterWrite(I2C_BUS, (addr << 1), tx, 2, 0);
@@ -54,7 +54,7 @@ int i2c_writeByte(uint8_t addr, uint8_t reg, uint8_t value) {
 	else { return 1; }
 }
 
-int i2c_writeBytes(uint8_t addr, uint8_t reg, uint8_t count, uint8_t* values) {
+int i2c_write_bytes(uint8_t addr, uint8_t reg, uint8_t count, uint8_t* values) {
 	// Insert the register addr to the beginning of the byte sequence, then write the byte values
 	uint8_t tx[1 + count];
 	tx[0] = reg;
