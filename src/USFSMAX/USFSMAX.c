@@ -92,12 +92,12 @@ void USFSMAX_init() {
 		int count = 0;
 		status = i2c_read_byte(USFSMAX_ADDR, FUSION_STATUS);
 		while (!(status & FUSION_RUNNING_MASK) && count < 2000) {
-			delay(10);
-			count += 10;
+			delay(100);
+			count += 100;
 			status = i2c_read_byte(USFSMAX_ADDR, FUSION_STATUS);
 		}
 
-		if (status == 0) { printf("Fusion loop started!\n"); }
+		if (status == 1) { printf("Fusion loop started!\n"); }
 		else { printf("Failed to start fusion loop!\n"); return; }
 
 		// Check for sensor errors
@@ -123,8 +123,45 @@ void USFSMAX_init() {
 		    }
 		  }
 
-		printf("USFSMAX Coprocessor configured!\n");
-		// TODO : Configuration done, read sensor calibrations and print
+		printf("USFSMAX Coprocessor configured!\n\n");
+
+		// Read calibration status/data
+		printf("Reading calibration status...\n");
+		uint8_t cal_status = i2c_read_byte(USFSMAX_ADDR, CALIBRATION_STATUS);
+		if (!(cal_status & 0xF8)) {
+			if (!(cal_status & 0x80)) { printf("Invalid Hard Iron offsets!\n"); }
+			else if (!(cal_status & 0x40)) { printf("Invalid Fine Magnetometer calibration!\n"); }
+			else if (!(cal_status & 0x20)) { printf("Invalid Accelerometer calibration!\n"); }
+			else if (!(cal_status & 0x10)) { printf("Invalid Elliptical Magnetometer calibration!\n"); }
+			else if (!(cal_status & 0x08)) { printf("Invalid Gyroscope calibration!\n"); }
+			printf("The device needs to be calibrated!\n");
+		} else {
+			printf("Calibration status OK!\n");
+		}
+
+		full_adv_cal_t gyro_cal = USFSMAX_get_gyro_cal();
+		printf("Gyro calibration : \n");
+		printf("Calibration good : %i\n", gyro_cal.cal_good);
+		printf("X : %.2f Y : %.2f Z : %.2f\n", gyro_cal.V[0], gyro_cal.V[1], gyro_cal.V[2]);
+		delay(100);
+
+		full_adv_cal_t accel_cal = USFSMAX_get_accel_cal();
+		printf("Accelerometer calibration : \n");
+		printf("Calibration good : %i\n", accel_cal.cal_good);
+		printf("X : %.2f Y : %.2f Z : %.2f\n", accel_cal.V[0], accel_cal.V[1], accel_cal.V[2]);
+		delay(100);
+
+		full_adv_cal_t magn_cal_ellip = USFSMAX_get_magn_cal_ellip();
+		printf("Magnetometer (elliptical) calibration : \n");
+		printf("Calibration good : %i\n", magn_cal_ellip.cal_good);
+		printf("X : %.2f Y : %.2f Z : %.2f\n", magn_cal_ellip.V[0], magn_cal_ellip.V[1], magn_cal_ellip.V[2]);
+		delay(100);
+
+		full_adv_cal_t magn_cal_fine = USFSMAX_get_magn_cal_fine();
+		printf("Magnetometer (fine) calibration : \n");
+		printf("Calibration good : %i\n", magn_cal_fine.cal_good);
+		printf("X : %.2f Y : %.2f Z : %.2f\n", magn_cal_fine.V[0], magn_cal_fine.V[1], magn_cal_fine.V[2]);
+		delay(100);
 
 	} else { // Errors/alarms present
 		printf("Sensor status error! Code : %i\n", status);
@@ -140,13 +177,22 @@ void USFSMAX_set_config(CoProcessorConfig_t config) {
 
 	// Write configuration block to device
 	printf("Writing configuration to device...");
-	i2c_write_bytes(USFSMAX_ADDR, COPRO_CFG_DATA0, 30, unpacked);
-	delay(100);
-	i2c_write_bytes(USFSMAX_ADDR, COPRO_CFG_DATA1, sizeof(CoProcessorConfig_t) - 30, &unpacked[30]);
+	i2c_write_bytes(USFSMAX_ADDR, COPRO_CFG_DATA0, sizeof(CoProcessorConfig_t), unpacked);
 	delay(100);
 	printf("Done!\n");
 
 	free(unpacked); // Don't forget to free your memory allocation!!
+}
+
+CoProcessorConfig_t USFSMAX_get_config() {
+	uint8_t* bytes = malloc(sizeof(CoProcessorConfig_t));
+	CoProcessorConfig_t config;
+
+	i2c_read_bytes(USFSMAX_ADDR, COPRO_CFG_DATA0, sizeof(CoProcessorConfig_t), bytes);
+	memcpy(&config, bytes, sizeof(CoProcessorConfig_t));
+
+	free(bytes);
+	return config;
 }
 
 GyroData_t USFSMAX_get_gyro() {
@@ -203,5 +249,61 @@ QuatData_t USFSMAX_get_quat() {
 	quat_data.d = bytes_to_float(&bytes[12]);
 
 	return quat_data;
+}
+
+EulerData_t USFSMAX_get_euler() {
+	uint8_t bytes[16];
+	EulerData_t euler_data;
+
+	i2c_read_bytes(USFSMAX_ADDR, YAW_BYTE0, 12, bytes);
+	euler_data.heading = bytes_to_float(&bytes[0]);
+	euler_data.pitch = bytes_to_float(&bytes[4]);
+	euler_data.roll = bytes_to_float(&bytes[8]);
+
+	return euler_data;
+}
+
+full_adv_cal_t USFSMAX_get_gyro_cal() {
+	uint8_t* bytes = malloc(sizeof(full_adv_cal_t));
+	full_adv_cal_t cal_data;
+
+	i2c_read_bytes(USFSMAX_ADDR, GYRO_CAL_DATA0, sizeof(full_adv_cal_t), bytes);
+	memcpy(&cal_data, bytes, sizeof(full_adv_cal_t));
+
+	free(bytes);
+	return cal_data;
+}
+
+full_adv_cal_t USFSMAX_get_accel_cal() {
+	uint8_t* bytes = malloc(sizeof(full_adv_cal_t));
+	full_adv_cal_t cal_data;
+
+	i2c_read_bytes(USFSMAX_ADDR, ACCEL_CAL_DATA0, sizeof(full_adv_cal_t), bytes);
+	memcpy(&cal_data, bytes, sizeof(full_adv_cal_t));
+
+	free(bytes);
+	return cal_data;
+}
+
+full_adv_cal_t USFSMAX_get_magn_cal_ellip() {
+	uint8_t* bytes = malloc(sizeof(full_adv_cal_t));
+	full_adv_cal_t cal_data;
+
+	i2c_read_bytes(USFSMAX_ADDR, ELLIP_MAG_CAL_DATA0, sizeof(full_adv_cal_t), bytes);
+	memcpy(&cal_data, bytes, sizeof(full_adv_cal_t));
+
+	free(bytes);
+	return cal_data;
+}
+
+full_adv_cal_t USFSMAX_get_magn_cal_fine() {
+	uint8_t* bytes = malloc(sizeof(full_adv_cal_t));
+	full_adv_cal_t cal_data;
+
+	i2c_read_bytes(USFSMAX_ADDR, FINE_MAG_CAL_DATA0, sizeof(full_adv_cal_t), bytes);
+	memcpy(&cal_data, bytes, sizeof(full_adv_cal_t));
+
+	free(bytes);
+	return cal_data;
 }
 

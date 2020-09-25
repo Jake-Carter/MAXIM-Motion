@@ -206,6 +206,7 @@ typedef struct {
 
 void USFSMAX_init();
 void USFSMAX_set_config(CoProcessorConfig_t config);
+CoProcessorConfig_t USFSMAX_get_config();
 
 GyroData_t USFSMAX_get_gyro();
 AccelData_t USFSMAX_get_accel();
@@ -213,6 +214,11 @@ MagnData_t USFSMAX_get_magn();
 uint32_t USFSMAX_get_baro();
 QuatData_t USFSMAX_get_quat();
 EulerData_t USFSMAX_get_euler();
+
+full_adv_cal_t USFSMAX_get_gyro_cal();
+full_adv_cal_t USFSMAX_get_accel_cal();
+full_adv_cal_t USFSMAX_get_magn_cal_ellip();
+full_adv_cal_t USFSMAX_get_magn_cal_fine();
 
 /*
 class USFSMAX
