@@ -175,8 +175,44 @@ extern int32_t                        baroADC[2];
 extern float                          Rsq;
 */
 
+typedef struct {
+	int16_t x, y, z;
+} GyroData_t;
+
+typedef struct {
+	int16_t x, y, z;
+} AccelData_t;
+
+typedef struct {
+	int16_t x, y, z;
+} MagnData_t;
+
+typedef struct {
+	float a, b, c, d;	// a + b*i + c*j + d*k, where i, j, and k are the unit vectors.
+} QuatData_t;
+
+typedef struct {
+	float heading, pitch, roll;
+} EulerData_t;
+
+typedef struct {
+	GyroData_t gyro;		// Gyroscope data
+	AccelData_t accel;		// Accelerometer data
+	MagnData_t magn;		// Magnetometer data
+	uint32_t barom;			// Barometer data
+	QuatData_t quat;		// Orientation data in quaternions (if enabled)
+	EulerData_t euler;		// Orientation data in euler angles (if enabled)
+} USFSMAXData_t;
+
 void USFSMAX_init();
-void USFSMAX_configure(CoProcessorConfig_t config);
+void USFSMAX_set_config(CoProcessorConfig_t config);
+
+GyroData_t USFSMAX_get_gyro();
+AccelData_t USFSMAX_get_accel();
+MagnData_t USFSMAX_get_magn();
+uint32_t USFSMAX_get_baro();
+QuatData_t USFSMAX_get_quat();
+EulerData_t USFSMAX_get_euler();
 
 /*
 class USFSMAX
