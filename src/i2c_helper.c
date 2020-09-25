@@ -4,6 +4,7 @@
 
 #include "i2c.h"
 #include "i2c_helper.h"
+#include <stdio.h>
 
 //////////////////////////////////
 // CONFIG
@@ -20,14 +21,15 @@ void i2c_init() {
 	// Configure I2C bus
 	I2C_Shutdown(I2C_BUS);
 	I2C_Init(I2C_BUS, I2C_SPEED, 0);
+	NVIC_EnableIRQ(I2C0_IRQn);
 }
 
 uint8_t i2c_read_byte(uint8_t addr, uint8_t reg) {
 	uint8_t tx = reg;
-	uint8_t rx = 0;
+	uint8_t rx = 0x0;
 
-	I2C_MasterWrite(I2C_BUS, (addr << 1), &tx, 1, 1); // Write the register addr to the slave w/ a repeated start
-	I2C_MasterRead(I2C_BUS, (addr << 1), &rx, 1, 0); // Read 1 byte from the slave
+	int w_status = I2C_MasterWrite(I2C_BUS, (addr << 1), &tx, 1, 1); // Write the register addr to the slave w/ a repeated start
+	int r_status = I2C_MasterRead(I2C_BUS, (addr << 1), &rx, 1, 0); // Read 1 byte from the slave
 
 	return rx;
 }
@@ -35,7 +37,7 @@ uint8_t i2c_read_byte(uint8_t addr, uint8_t reg) {
 int i2c_read_bytes(uint8_t addr, uint8_t reg, uint8_t count, uint8_t* out) {
 	uint8_t tx = reg;
 	for (int i = 0; i < count; i++) {
-		out[i] = 0;
+		out[i] = 0x0;
 	}
 
 	int w_status = I2C_MasterWrite(I2C_BUS, (addr << 1), &tx, 1, 1); // Write the register addr to the slave w/ a repeated start
