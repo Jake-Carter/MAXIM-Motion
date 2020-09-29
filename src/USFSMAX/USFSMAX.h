@@ -207,6 +207,8 @@ typedef struct {
 void USFSMAX_init();
 void USFSMAX_set_config(CoProcessorConfig_t config);
 CoProcessorConfig_t USFSMAX_get_config();
+void USFSMAX_start_fusion();
+void USFSMAX_stop_fusion();
 
 GyroData_t USFSMAX_get_gyro();
 AccelData_t USFSMAX_get_accel();

@@ -3,32 +3,9 @@
 #include <string.h>
 #include "USFSMAX.h"
 #include "i2c_helper.h"
-#include "tmr_utils.h"
+#include "utils.h"
 
 // TODO : Implement all USFSMAX.h functions
-
-//************************************************
-// UTILITY
-//************************************************
-
-void delay(int ms) {
-	TMR_Delay(MXC_TMR0, MSEC(ms), 0);
-}
-
-float bytes_to_float (uint8_t *buf)
-{
-  union
-  {
-    uint32_t ui32;
-    float f;
-  } u;
-
-  u.ui32 = (((uint32_t)buf[0]) +
-           (((uint32_t)buf[1]) <<  8) +
-           (((uint32_t)buf[2]) << 16) +
-           (((uint32_t)buf[3]) << 24));
-  return u.f;
-}
 
 //************************************************
 // FUNCTION IMPLEMENTATIONS
@@ -83,8 +60,7 @@ void USFSMAX_init() {
 
 		// Restart sensor fusion
 		printf("Restarting sensor fusion...");
-		i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x1);
-		delay(100);
+		USFSMAX_start_fusion();
 
 		// Poll FUSION_STATUS register to see if fusion has resumed, with a timeout of 2s
 		printf("Verifying...");
@@ -193,6 +169,16 @@ CoProcessorConfig_t USFSMAX_get_config() {
 
 	free(bytes);
 	return config;
+}
+
+void USFSMAX_start_fusion() {
+	i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x1);
+	delay(100);
+}
+
+void USFSMAX_stop_fusion() {
+	i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x0);
+	delay(100);
 }
 
 GyroData_t USFSMAX_get_gyro() {
