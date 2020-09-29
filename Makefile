@@ -68,6 +68,7 @@ CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 SRCS  = main.c
 SRCS += i2c_helper.c
 SRCS += USFSMAX.c
+SRCS += utils.c
 
 # Where to find source files for this test
 VPATH=./src

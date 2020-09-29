@@ -53,24 +53,43 @@
 #include "pb.h"
 #include "i2c_helper.h"
 #include "USFSMAX.h"
+#include "utils.h"
 
-//Master interrupt handler
-/*
-void I2C0_IRQHandler(void)
-{
-    I2C_Handler(I2C_MASTER);
-    return;
+void init() {
+	i2c_init();
+	USFSMAX_init();
 }
-*/
 
 // *****************************************************************************
 int main(void)
 {
+	init();
+	int count = 0;
 
-    i2c_init();
-    //NVIC_EnableIRQ(I2C0_IRQn);
+	GyroData_t gyro;
+	AccelData_t accel;
+	MagnData_t magn;
+	uint32_t barom;
+	QuatData_t quat;
 
-    USFSMAX_init();
+	do {
+		gyro = USFSMAX_get_gyro();
+		accel = USFSMAX_get_accel();
+		magn = USFSMAX_get_magn();
+		barom = USFSMAX_get_baro();
+		quat = USFSMAX_get_quat();
+
+		printf("\nGyroscope data:\nX : %i\tY : %i\t Z : %i\n", gyro.x, gyro.y, gyro.z);
+		printf("Accelerometer data:\nX : %i\tY : %i\t Z : %i\n", accel.x, accel.y, accel.z);
+		printf("Magnetometer data:\nX : %i\tY : %i\t Z : %i\n", magn.x, magn.y, magn.z);
+		printf("Barometer data\nValue : %i\n", barom);
+		printf("Orientation data (Quaternion):\n %.2f + %.2f*i + %.2f*j + %.2f*k\n", quat.a, quat.b, quat.c, quat.d);
+
+		delay(5000);
+		count++;
+	} while (count < 20);
+
+	USFSMAX_stop_fusion();
 
     return 1;
 }
