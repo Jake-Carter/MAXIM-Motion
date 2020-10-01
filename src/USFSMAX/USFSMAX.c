@@ -20,7 +20,7 @@ void USFSMAX_init() {
 		i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x0); // Stop the sensor fusion.  Configuration can only be written if fusion loop is stopped.
 		delay(100);
 
-		CoProcessorConfig_t config; // Set up config struct from values set in config.h (I don't really like the way this is done but it's how it's done in the original source.  TODO : Do this better
+		CoProcessorConfig_t config; // Set up config struct from values set in config.h
 		config.cal_points        = CAL_POINTS;
 		config.Ascale            = ACC_SCALE;
 		config.AODR              = ACC_ODR;
