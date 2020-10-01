@@ -249,6 +249,30 @@ EulerData_t USFSMAX_get_euler() {
 	return euler_data;
 }
 
+LinAccelData_t USFSMAX_get_linaccel() {
+	uint8_t bytes[6];
+	LinAccelData_t linaccel_data;
+
+	i2c_read_bytes(USFSMAX_ADDR, LIN_X_L, 6, bytes);
+	linaccel_data.x = ((int16_t)bytes[1] << 8) | bytes[0];
+	linaccel_data.y = ((int16_t)bytes[3] << 8) | bytes[2];
+	linaccel_data.z = ((int16_t)bytes[5] << 8) | bytes[4];
+
+	return linaccel_data;
+}
+
+GravData_t USFSMAX_get_grav() {
+	uint8_t bytes[6];
+	GravData_t grav_data;
+
+	i2c_read_bytes(USFSMAX_ADDR, GRAV_X_L, 6, bytes);
+	grav_data.x = ((int16_t)bytes[1] << 8) | bytes[0];
+	grav_data.y = ((int16_t)bytes[3] << 8) | bytes[2];
+	grav_data.z = ((int16_t)bytes[5] << 8) | bytes[4];
+
+	return grav_data;
+}
+
 full_adv_cal_t USFSMAX_get_gyro_cal() {
 	uint8_t* bytes = malloc(sizeof(full_adv_cal_t));
 	full_adv_cal_t cal_data;

@@ -196,26 +196,40 @@ typedef struct {
 } EulerData_t;
 
 typedef struct {
+	int16_t x, y, z;
+} LinAccelData_t;
+
+typedef struct {
+	int16_t x, y, z;
+} GravData_t;
+
+typedef struct {
 	GyroData_t gyro;		// Gyroscope data
 	AccelData_t accel;		// Accelerometer data
 	MagnData_t magn;		// Magnetometer data
 	uint32_t barom;			// Barometer data
 	QuatData_t quat;		// Orientation data in quaternions (if enabled)
 	EulerData_t euler;		// Orientation data in euler angles (if enabled)
+	LinAccelData_t linaccel;// Linear acceleration data
+	GravData_t grav;		// Gravity data
 } USFSMAXData_t;
 
+// Management functions
 void USFSMAX_init();
 void USFSMAX_set_config(CoProcessorConfig_t config);
 CoProcessorConfig_t USFSMAX_get_config();
 void USFSMAX_start_fusion();
 void USFSMAX_stop_fusion();
 
+// Data functions
 GyroData_t USFSMAX_get_gyro();
 AccelData_t USFSMAX_get_accel();
 MagnData_t USFSMAX_get_magn();
 uint32_t USFSMAX_get_baro();
 QuatData_t USFSMAX_get_quat();
 EulerData_t USFSMAX_get_euler();
+LinAccelData_t USFSMAX_get_linaccel();
+GravData_t USFSMAX_get_grav();
 
 full_adv_cal_t USFSMAX_get_gyro_cal();
 full_adv_cal_t USFSMAX_get_accel_cal();
