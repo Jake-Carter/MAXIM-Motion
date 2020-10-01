@@ -66,24 +66,24 @@ int main(void)
 	init();
 	int count = 0;
 
-	GyroData_t gyro;
-	AccelData_t accel;
-	MagnData_t magn;
-	uint32_t barom;
-	QuatData_t quat;
+	USFSMAXData_t data;
 
 	do {
-		gyro = USFSMAX_get_gyro();
-		accel = USFSMAX_get_accel();
-		magn = USFSMAX_get_magn();
-		barom = USFSMAX_get_baro();
-		quat = USFSMAX_get_quat();
+		data.gyro = USFSMAX_get_gyro();
+		data.accel = USFSMAX_get_accel();
+		data.magn = USFSMAX_get_magn();
+		data.barom = USFSMAX_get_baro();
+		data.quat = USFSMAX_get_quat();
+		data.linaccel = USFSMAX_get_linaccel();
+		data.grav = USFSMAX_get_grav();
 
-		printf("\nGyroscope data:\nX : %i\tY : %i\t Z : %i\n", gyro.x, gyro.y, gyro.z);
-		printf("Accelerometer data:\nX : %i\tY : %i\t Z : %i\n", accel.x, accel.y, accel.z);
-		printf("Magnetometer data:\nX : %i\tY : %i\t Z : %i\n", magn.x, magn.y, magn.z);
-		printf("Barometer data\nValue : %i\n", barom);
-		printf("Orientation data (Quaternion):\n %.2f + %.2f*i + %.2f*j + %.2f*k\n", quat.a, quat.b, quat.c, quat.d);
+		printf("\nGyroscope data:\nX : %i\tY : %i\t Z : %i\n", data.gyro.x, data.gyro.y, data.gyro.z);
+		printf("Accelerometer data:\nX : %i\tY : %i\t Z : %i\n", data.accel.x, data.accel.y, data.accel.z);
+		printf("Magnetometer data:\nX : %i\tY : %i\t Z : %i\n", data.magn.x, data.magn.y, data.magn.z);
+		printf("Barometer data\nValue : %i\n", data.barom);
+		printf("Orientation data (Quaternion):\n %.2f + %.2f*i + %.2f*j + %.2f*k\n", data.quat.a, data.quat.b, data.quat.c, data.quat.d);
+		printf("Linear acceleration data:\nX : %i\tY : %i\t Z : %i\n", data.linaccel.x, data.linaccel.y, data.linaccel.z);
+		printf("Gravity data:\nX : %i\tY : %i\t Z : %i\n", data.grav.x, data.grav.y, data.grav.z);
 
 		delay(5000);
 		count++;
