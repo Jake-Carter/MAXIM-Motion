@@ -48,9 +48,6 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
-#include "mxc_config.h"
-#include "pb.h"
 #include "i2c_helper.h"
 #include "USFSMAX.h"
 #include "utils.h"
@@ -77,6 +74,7 @@ int main(void)
 		data.linaccel = USFSMAX_get_linaccel();
 		data.grav = USFSMAX_get_grav();
 
+
 		printf("\nGyroscope data:\nX : %i\tY : %i\t Z : %i\n", data.gyro.x, data.gyro.y, data.gyro.z);
 		printf("Accelerometer data:\nX : %i\tY : %i\t Z : %i\n", data.accel.x, data.accel.y, data.accel.z);
 		printf("Magnetometer data:\nX : %i\tY : %i\t Z : %i\n", data.magn.x, data.magn.y, data.magn.z);
@@ -85,7 +83,7 @@ int main(void)
 		printf("Linear acceleration data:\nX : %i\tY : %i\t Z : %i\n", data.linaccel.x, data.linaccel.y, data.linaccel.z);
 		printf("Gravity data:\nX : %i\tY : %i\t Z : %i\n", data.grav.x, data.grav.y, data.grav.z);
 
-		delay(5000);
+		delay(1000);
 		count++;
 	} while (count < 20);
 

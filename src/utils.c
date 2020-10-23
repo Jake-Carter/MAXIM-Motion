@@ -6,9 +6,10 @@
  */
 
 #include "utils.h"
+#include "mxc_delay.h"
 
 void delay(int ms) {
-	TMR_Delay(MXC_TMR0, MSEC(ms), 0);
+	MXC_Delay(MXC_DELAY_MSEC(ms));
 }
 
 float bytes_to_float (uint8_t *buf) {

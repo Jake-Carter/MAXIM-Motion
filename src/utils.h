@@ -8,10 +8,9 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include "tmr_utils.h"
+#include <stdint.h>
 
 void delay(int ms);
-
 float bytes_to_float (uint8_t *buf);
 
 #endif
