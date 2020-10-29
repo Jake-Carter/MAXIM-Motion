@@ -12,7 +12,7 @@
 
 #define I2C_BUS 		MXC_I2C0
 #define I2C_SPEED		100000
-#define I2C_BUFFER_SIZE 32
+#define I2C_BUFFER_SIZE 128
 
 //////////////////////////////////
 // GLOBALS
