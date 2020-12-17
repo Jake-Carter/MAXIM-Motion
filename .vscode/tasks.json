@@ -1,0 +1,45 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "make -j 8 all",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "make -j 8 clean",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "flash",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-f", "C:/MaximSDK/Tools/OpenOCD/scripts/interface/cmsis-dap.cfg",
+                "-f", "C:/MaximSDK/Tools/OpenOCD/scripts/target/MAX32655.cfg",
+                "-c", "program build/max32655.elf verify exit"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "debug-launch",
+            "type": "process",
+            "command": "openocd",
+            "args": [
+                "-f", "C:/MaximSDK/Tools/OpenOCD/scripts/interface/cmsis-dap.cfg",
+                "-f", "C:/MaximSDK/Tools/OpenOCD/scripts/target/MAX32655.cfg",
+                "-c", "program build/max32655.elf verify"
+            ],
+            "group":"build",
+            "problemMatcher": []
+        }
+    ]
+}

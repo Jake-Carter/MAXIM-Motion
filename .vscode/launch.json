@@ -1,0 +1,57 @@
+{
+    "configurations": [
+        {
+            "name": "GDB (TCP)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/max32655.elf",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/MaximSDK/Tools/GNUTools/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerArgs": "build/max32655.elf",
+            "setupCommands": [
+                {
+                    "description": "Link to local openOCD server",
+                    "text": "target remote localhost:3333",
+                    "ignoreFailures": false
+                }
+            ],
+        },
+        {
+            "name": "GDB (pipe)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/max32655.elf",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "C:/MaximSDK/Tools/GNUTools/bin/arm-none-eabi-gdb.exe",
+            "miDebuggerArgs": "build/max32655.elf",
+            "preLaunchTask": "flash",
+            "setupCommands": [
+                {
+                    "description": "Link to local openOCD server",
+                    "text": "target remote | openocd -c \"gdb_port pipe;log_output openocd.log\" -f C:/MaximSDK/Tools/OpenOCD/scripts/interface/cmsis-dap.cfg -f C:/MaximSDK/Tools/OpenOCD/scripts/target/MAX32655.cfg -c \"init\"",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Reset",
+                    "text": "monitor reset halt",
+                    "ignoreFailures": false
+                },
+                {
+                    "Description": "Breakpoint on main",
+                    "text": "break main",
+                    "ignoreFailures": false
+                }
+            ],
+        },
+    ],
+}
