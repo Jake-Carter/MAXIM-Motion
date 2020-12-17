@@ -32,6 +32,9 @@
  #
  ###############################################################################
 
+MAKE=make
+MAXIM_PATH = C:/MaximSDK
+
 # This is the name of the build output file
 ifeq "$(PROJECT)" ""
 PROJECT=max32655
@@ -60,6 +63,7 @@ LIBS_DIR=../../../Libraries
 else
 LIBS_DIR=/$(subst \,/,$(subst :,,$(MAXIM_PATH))/Libraries)
 endif
+#LIBS_DIR = ./Libraries
 
 CMSIS_ROOT=$(LIBS_DIR)/CMSIS
 # SECURE_BOOT_TOOLS_DIR=$(LIBS_DIR)/../Tools/SBT
