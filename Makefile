@@ -33,11 +33,11 @@
  ###############################################################################
 
 MAKE=make
-MAXIM_PATH = C:/MaximSDK
+MAXIM_PATH=C:/MaximSDK
 
 # This is the name of the build output file
 ifeq "$(PROJECT)" ""
-PROJECT=max32655
+PROJECT=Maxim-Motion
 endif
 
 # Specify the target processor
