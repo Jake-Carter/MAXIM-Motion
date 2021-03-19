@@ -15,7 +15,7 @@ void USFSMAX_init() {
 	delay(100);
 
 	if (status == 0) { // No errors/alarms
-		USFSMAX_stop_fusion();
+		USFSMAX_stop_fusion(); // Stop main fusion loop.  Configuration can only be written when stopped.
 		delay(100);
 
 		CoProcessorConfig_t config; // Set up config struct from values set in config.h
