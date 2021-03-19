@@ -15,7 +15,7 @@ void USFSMAX_init() {
 	delay(100);
 
 	if (status == 0) { // No errors/alarms
-		i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x0); // Stop the sensor fusion.  Configuration can only be written if fusion loop is stopped.
+		USFSMAX_stop_fusion();
 		delay(100);
 
 		CoProcessorConfig_t config; // Set up config struct from values set in config.h
@@ -170,12 +170,12 @@ CoProcessorConfig_t USFSMAX_get_config() {
 }
 
 void USFSMAX_start_fusion() {
-	i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x1);
+	i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x1 | (OUTPUT_EULER_ANGLES << 1) | (SCALED_SENSOR_DATA << 2));
 	delay(100);
 }
 
 void USFSMAX_stop_fusion() {
-	i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x0);
+	i2c_write_byte(USFSMAX_ADDR, FUSION_START_STOP, 0x0 | (OUTPUT_EULER_ANGLES << 1) | (SCALED_SENSOR_DATA << 2));
 	delay(100);
 }
 
