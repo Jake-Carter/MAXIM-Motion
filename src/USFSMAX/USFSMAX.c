@@ -5,8 +5,6 @@
 #include "i2c_helper.h"
 #include "utils.h"
 
-// TODO : Implement all USFSMAX.h functions
-
 //************************************************
 // FUNCTION IMPLEMENTATIONS
 //************************************************
@@ -217,6 +215,17 @@ MagnData_t USFSMAX_get_magn() {
 	return magn_data;
 }
 
+MagnData_Inplane_t USFSMAX_get_magn_inplane() {
+	uint8_t bytes[4];
+	MagnData_Inplane_t magn_data_inplane;
+
+	i2c_read_bytes(USFSMAX_ADDR, MX_L, 4, MX_L);
+	magn_data_inplane.x = (float)(((int16_t)bytes[1] << 8) | bytes[0]) * LIS2MDL_UT_PER_COUNT;
+	magn_data_inplane.y = (float)(((int16_t)bytes[3] << 8) | bytes[2]) * LIS2MDL_UT_PER_COUNT;
+
+	return magn_data_inplane;
+}
+
 uint32_t USFSMAX_get_baro() {
 	uint8_t bytes[3];
 
@@ -317,3 +326,17 @@ full_adv_cal_t USFSMAX_get_magn_cal_fine() {
 	return cal_data;
 }
 
+void USFSMAX_reset_DHI() {
+	if (USE_2D_DHI_CORRECTOR) {
+		i2c_write_byte(USFSMAX_ADDR, CALIBRATION_REQUEST, 0x70);	// DHI Enable = true, DHI Reset = true, 2D corrector = true
+	} else {
+		i2c_write_byte(USFSMAX_ADDR, CALIBRATION_REQUEST, 0x30);	// DHI Enable = true, DHI Reset = true, 2D corrector = false
+	}
+}
+
+float USFSMAX_get_DHI_fit() {
+	uint8_t bytes[2];
+
+	i2c_read_bytes(USFSMAX_ADDR, DHI_RSQ_L, 2, bytes);
+	return (float)(((int16_t)bytes[1] << 8) | bytes[0]) / 10000.0f;
+}
