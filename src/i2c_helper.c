@@ -37,8 +37,13 @@ void wipe_buffers() {
 
 void i2c_init() {
 	// Configure I2C bus
-	MXC_I2C_Init(I2C_BUS, 1, 0);
-	MXC_I2C_SetFrequency(I2C_BUS, I2C_SPEED);
+	if(MXC_I2C_Init(I2C_BUS, 1, 0) == 0) {
+		printf("I2C initialization failed!\n");
+	}
+
+	if(MXC_I2C_SetFrequency(I2C_BUS, I2C_SPEED) == 0) {
+		printf("I2C set frequency failed!\n");
+	}
 
 	// Initialize request struct
 	req.i2c = I2C_BUS;
